@@ -1,5 +1,5 @@
-JBoss BPM Web Process Designer standalone on OpenShift 
-=======================================================
+JBoss BPM Web Process Designer on OpenShift 
+===========================================
 Installing the JBoss BPM Web Process Designer standalone on OpenShift was never easier!
 
 This git repository helps you get up and running quickly with the jBPM
