@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: tihomirsurdilovic
+Build-Jdk: 1.6.0_37
+Bundle-Name: Process Designer
+Bundle-SymbolicName: designer
+Bundle-Version: 2.5.0-SNAPSHOT
+
