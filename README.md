@@ -17,11 +17,15 @@ Create a JBoss EAP application
 
 That's it, you can now checkout your application at:
 
-    http://designer-$your_domain.rhcloud.com     follow link provided to http://designer-$your_domain.rhcloud.com/designer
+    http://designer-$your_domain.rhcloud.com     
 
-    Login with 
+Just follow the link provided to the designer login:
 
-       user: erics
+    http://designer-$your_domain.rhcloud.com/designer
+
+    Login credentials
+
+           user: erics
 
        password: erics
 
