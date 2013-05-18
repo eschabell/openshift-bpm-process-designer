@@ -13,11 +13,11 @@ Create an account at http://openshift.redhat.com/
 
 Create a JBoss EAP application
 
-    rhc app create -t jbosseap-6.0 --from-code git://github.com/eschabell/openshift-bpm-process-designer.git designer
+    rhc app create -t jbossas-7 --from-code git://github.com/eschabell/openshift-bpm-process-designer.git designer
 
 That's it, you can now checkout your application at:
 
-    http://designer-$your_domain.rhcloud.com/designer/editor?profile=jbpm&uuid=123
+    http://designer-$your_domain.rhcloud.com     follow link provided to http://designer-$your_domain.rhcloud.com/designer
 
 Releases
 ---------
