@@ -19,7 +19,16 @@ That's it, you can now checkout your application at:
 
     http://designer-$your_domain.rhcloud.com     follow link provided to http://designer-$your_domain.rhcloud.com/designer
 
+    Login with 
+
+       user: erics
+
+       password: erics
+
 Releases
 ---------
 
 - v1.0 running on JBoss EAP 6.0, standalone web process designer 2.5.
+
+- v1.1 running on JBoss AS 7.1, standalone web process designer v6.
+
