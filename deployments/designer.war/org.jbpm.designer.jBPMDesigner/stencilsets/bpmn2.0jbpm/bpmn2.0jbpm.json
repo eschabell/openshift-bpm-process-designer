@@ -320,7 +320,63 @@
                     "optional":true,
                     "simulation" : true,
                     "min" : "0"
+                },
+                {
+                    "id":"timeunit",
+                    "type":"Choice",
+                    "title":"Time Unit",
+                    "value":"",
+                    "description":"Time unit options (seconds, minutes, hours)",
+                    "description_ja":"Time unit options (seconds, minutes, hours)",
+                    "readonly":false,
+                    "optional":true,
+                    "simulation" : true,
+                    "items": [
+                        {
+                            "id": "c1",
+                            "title":"milliseconds",
+                            "value":"ms"
+                        },
+                        {
+                            "id": "c2",
+                            "title": "seconds",
+                            "value": "s"
+                        },
+                        {
+                            "id": "c3",
+                            "title": "minutes",
+                            "value": "min"
+                        },
+                        {
+                            "id": "c4",
+                            "title": "hours",
+                            "value": "hour"
+                        },
+                        {
+                            "id": "c5",
+                            "title": "days",
+                            "value": "day"
+                        },
+                        {
+                            "id": "c6",
+                            "title": "years",
+                            "value": "year"
+                        }
+                    ]
                 }
+				/**,
+				{
+					"id":"outputset",
+					"type":"Text",
+					"title":"OutputSet",
+					"value":"",
+					"description":"The OutputSet for the catch Event.",
+					"description_ja":"キャッチイベントのOutputSet。",
+					"readonly":false,
+					"optional":true,
+					"length":"",
+					"wrapLines":true
+				}**/
  			]
  		},
  		{
@@ -397,7 +453,7 @@
                     "readonly":false,
                     "optional":true,
                     "simulation" : true,
-                    "fordistribution":"uniform",
+                    "fordistribution":"uniform|random",
                     "min" : "0"
                 },
                 {
@@ -410,7 +466,7 @@
                     "readonly":false,
                     "optional":true,
                     "simulation" : true,
-                    "fordistribution":"uniform",
+                    "fordistribution":"uniform|random",
                     "min" : "0"
                 },
                 {
@@ -442,7 +498,7 @@
                     "id":"distributiontype",
                     "type":"Choice",
                     "title":"Distribution Type",
-                    "value":"normal",
+                    "value":"random",
                     "description":"",
                     "description_ja":"",
                     "readonly":false,
@@ -460,9 +516,57 @@
                             "value": "uniform"
                         },
                         {
+                            "id": "c3",
+                            "title": "random",
+                            "value": "random"
+                        },
+                        {
                             "id": "c4",
                             "title": "poisson",
                             "value": "poisson"
+                        }
+                    ]
+                },
+                {
+                    "id":"timeunit",
+                    "type":"Choice",
+                    "title":"Time Unit",
+                    "value":"",
+                    "description":"Time unit options (seconds, minutes, hours)",
+                    "description_ja":"Time unit options (seconds, minutes, hours)",
+                    "readonly":false,
+                    "optional":true,
+                    "simulation" : true,
+                    "items": [
+                        {
+                            "id": "c1",
+                            "title":"milliseconds",
+                            "value":"ms"
+                        },
+                        {
+                            "id": "c2",
+                            "title": "seconds",
+                            "value": "s"
+                        },
+                        {
+                            "id": "c3",
+                            "title": "minutes",
+                            "value": "min"
+                        },
+                        {
+                            "id": "c4",
+                            "title": "hours",
+                            "value": "hour"
+                        },
+                        {
+                            "id": "c5",
+                            "title": "days",
+                            "value": "day"
+                        },
+                        {
+                            "id": "c6",
+                            "title": "years",
+                            "value": "year"
                         }
                     ]
                 }
@@ -537,7 +641,7 @@
 					"id":"package",
 					"type":"String",
 					"title":"Package",
-					"value":"processes.general",
+					"value":"/defaultPackage/defaultPackage",
 					"description":"Package",
 					"description_ja":"パッケージ",
 					"readonly":false,
@@ -599,7 +703,7 @@
 					"id":"id",
 					"type":"String",
 					"title":"ID",
-					"value":"processes.general.myprocess.bpmn",
+					"value":"[/defaultPackage, /defaultPackage].BPMN2-SampleProcess",
 					"description":"ID",
 					"description_ja":"ID",
 					"readonly":false,
@@ -2641,7 +2745,7 @@
 			"properties" : [
 				/**{
 					"id":"assignments",
-					"type":"Visualdataassignment",
+					"type":"Dataassignment",
 					"title":"Assignments",
 					"value":"",
 					"description":"",
@@ -2964,7 +3068,7 @@
 			"properties" : [
 			    {
 					"id":"assignments",
-					"type":"Visualdataassignment",
+					"type":"Dataassignment",
 					"title":"Assignments",
 					"value":"",
 					"description":"",
@@ -3029,7 +3133,7 @@
 					"id":"name",
 					"type":"String",
 					"title":"Name",
-					"value":"myprocess.bpmn",
+					"value":"BPMN2-SampleProcess",
 					"description":"The descriptive name of the BPMN element.",
 					"description_ja":"BPMN要素のわかりやすい名前。",
 					"readonly":false,
@@ -3166,7 +3270,7 @@
 					"description_ja":"アクション開始時",
 					"readonly":false,
 					"optional":true,
-					"fortasktypes":"None|Send|Receive|User|Manual|Service|Script|Business Rule"
+					"fortasktypes":"None|Send|Receive|User|Manual|Service|Script"
 				},
 				{
 					"id":"onExitActions",
@@ -3177,7 +3281,7 @@
 					"description_ja":"アクション終了時",
 					"readonly":false,
 					"optional":true,
-					"fortasktypes":"None|Send|Receive|User|Manual|Service|Script|Business Rule"
+					"fortasktypes":"None|Send|Receive|User|Manual|Service|Script"
 				},
 				{
 					"id":"taskname",
@@ -3311,16 +3415,6 @@
     				"optional":true,
     				"fortasktypes":"None|User"
     			},
-    			{
-                    "id":"createdby",
-                    "type":"String",
-                    "title":"CreatedBy",
-                    "value":"",
-                    "description":"User name of Task creator",
-                    "readonly":false,
-                    "optional":true,
-                    "fortasktypes":"None|User"
-                },
 				{
 					"id":"skippable",
 					"type":"Choice",
@@ -3356,103 +3450,6 @@
 					"fortasktypes":"None|User"
 				},
 				{
-                    "id":"multipleinstance",
-                    "type":"Choice",
-                    "title":"Multiple Instance",
-                    "value":"false",
-                    "description":"Specifies whether the task is a multiple instance task.",
-                    "description_ja":"",
-                    "readonly":false,
-                    "optional":true,
-                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-                    "items": [
-                        {
-                            "id": "c1",
-                            "title":"true",
-                            "value":"true",
-                            "refToView":"sequential"
-                        },
-                        {
-                            "id": "c2",
-                            "title": "false",
-                            "value": "false",
-                            "refToView":"none"
-                        }
-                    ]
-                },
-                {
-                    "id":"multipleinstancecollectioninput",
-                    "type":"Dynamicchoice",
-                    "title":"MI collection input",
-                    "value":"",
-                    "description":"Sets the multiple instances collection input.",
-                    "description_ja":"",
-                    "readonly":false,
-                    "optional":true,
-                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-                    "ifproptrue":"multipleinstance",
-                    "items": [
-                        {
-                            "id": "c1",
-                            "title":"vardefs",
-                            "value":"$.properties.vardefs"
-                        },
-                        {
-                            "id": "c2",
-                            "title": "globals",
-                            "value": "$.properties.globals"
-                        }
-                    ]
-                },
-                {
-                    "id":"multipleinstancecollectionoutput",
-                    "type":"Dynamicchoice",
-                    "title":"MI collection output",
-                    "value":"",
-                    "description":"Sets the multiple instances collection output.",
-                    "description_ja":"",
-                    "readonly":false,
-                    "optional":true,
-                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-                    "ifproptrue":"multipleinstance",
-                    "items": [
-                        {
-                            "id": "c1",
-                            "title":"vardefs",
-                            "value":"$.properties.vardefs"
-                        },
-                        {
-                            "id": "c2",
-                            "title": "globals",
-                            "value": "$.properties.globals"
-                        }
-                    ]
-                },
-                {
-                    "id":"multipleinstancedatainput",
-                    "type":"Dynamicdatainput",
-                    "title":"MI data input",
-                    "value":"",
-                    "description":"Sets a data input for MI.",
-                    "description_ja":"",
-                    "readonly":false,
-                    "optional":true,
-                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-                    "ifproptrue":"multipleinstance"
-                },
-                {
-                    "id":"multipleinstancedataoutput",
-                    "type":"Dynamicdatoutput",
-                    "title":"MI data output",
-                    "value":"",
-                    "description":"Sets a data output for MI.",
-                    "description_ja":"",
-                    "readonly":false,
-                    "optional":true,
-                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-                    "ifproptrue":"multipleinstance"
-                },
-				{
 					"id":"min",
 					"type":"Float",
 					"title":"Processing time (min)",
@@ -3462,7 +3459,7 @@
 					"readonly":false,
 					"optional":true,
 					"simulation" : true,
-					"fordistribution":"uniform",
+					"fordistribution":"uniform|random",
 					"min" : "0"
 				},
 				{
@@ -3475,7 +3472,7 @@
 					"readonly":false,
 					"optional":true,
 					"simulation" : true,
-					"fordistribution":"uniform",
+					"fordistribution":"uniform|random",
 					"min" : "0"
 				},
 				{
@@ -3504,10 +3501,53 @@
 					"min" : "0"
 				},
 				{
+					"id":"timeunit",
+					"type":"Choice",
+					"title":"Time Unit",
+					"value":"",
+					"description":"Time unit options (seconds, minutes, hours)",
+					"description_ja":"Time unit options (seconds, minutes, hours)",
+					"readonly":false,
+					"optional":true,
+					"simulation" : true,
+					"items": [
+						{
+							"id": "c1",
+							"title":"milliseconds",
+							"value":"ms"
+						},
+						{
+							"id": "c2",
+							"title": "seconds",
+							"value": "s"
+						},
+						{
+							"id": "c3",
+							"title": "minutes",
+							"value": "min"
+						},
+						{
+							"id": "c4",
+							"title": "hours",
+							"value": "hour"
+						},
+						{
+							"id": "c5",
+							"title": "days",
+							"value": "day"
+						},
+						{
+							"id": "c6",
+							"title": "years",
+							"value": "year"
+						}
+					]
+				},
+				{
 					"id":"distributiontype",
 					"type":"Choice",
 					"title":"Distribution Type",
-					"value":"normal",
+					"value":"random",
 					"description":"",
 					"description_ja":"",
 					"readonly":false,
@@ -3523,6 +3563,11 @@
 							"id": "c2",
 							"title": "uniform",
 							"value": "uniform"
+						},
+						{
+							"id": "c3",
+							"title": "random",
+							"value": "random"
 						},
 						{
 							"id": "c4",
@@ -3564,6 +3609,17 @@
 					"value":"0",
 					"description":"",
 					"description_ja":"",
+					"readonly":false,
+					"optional":true,
+					"simulation" : true,
+					"min" : "0"
+				},
+				{
+					"id":"currency",
+					"type":"String",
+					"title":"Currency",
+					"value":"",
+					"description":"Base currency (ISO 4217)",
 					"readonly":false,
 					"optional":true,
 					"simulation" : true,
@@ -3798,104 +3854,6 @@
 								}
 							]
 						},
-		                {
-		                    "id":"multipleinstance",
-		                    "type":"Choice",
-		                    "title":"Multiple Instance",
-		                    "value":"false",
-		                    "description":"Specifies whether the task is a multiple instance task.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "popular" : true,
-		                    "items": [
-		                        {
-		                            "id": "c1",
-		                            "title":"true",
-		                            "value":"true",
-		                            "refToView":"sequential"
-		                        },
-		                        {
-		                            "id": "c2",
-		                            "title": "false",
-		                            "value": "false",
-		                            "refToView":"none"
-		                        }
-		                    ]
-		                },
-		                {
-		                    "id":"multipleinstancecollectioninput",
-		                    "type":"Dynamicchoice",
-		                    "title":"MI collection input",
-		                    "value":"",
-		                    "description":"Sets the multiple instances collection input.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "ifproptrue":"multipleinstance",
-		                    "items": [
-		                        {
-		                            "id": "c1",
-		                            "title":"vardefs",
-		                            "value":"$.properties.vardefs"
-		                        },
-		                        {
-		                            "id": "c2",
-		                            "title": "globals",
-		                            "value": "$.properties.globals"
-		                        }
-		                    ]
-		                },
-		                {
-		                    "id":"multipleinstancecollectionoutput",
-		                    "type":"Dynamicchoice",
-		                    "title":"MI collection output",
-		                    "value":"",
-		                    "description":"Sets the multiple instances collection output.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "ifproptrue":"multipleinstance",
-		                    "items": [
-		                        {
-		                            "id": "c1",
-		                            "title":"vardefs",
-		                            "value":"$.properties.vardefs"
-		                        },
-		                        {
-		                            "id": "c2",
-		                            "title": "globals",
-		                            "value": "$.properties.globals"
-		                        }
-		                    ]
-		                },
-		                {
-		                    "id":"multipleinstancedatainput",
-		                    "type":"Dynamicdatainput",
-		                    "title":"MI data input",
-		                    "value":"",
-		                    "description":"Sets a data input for MI.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "ifproptrue":"multipleinstance"
-		                },
-		                {
-		                    "id":"multipleinstancedataoutput",
-		                    "type":"Dynamicdatoutput",
-		                    "title":"MI data output",
-		                    "value":"",
-		                    "description":"Sets a data output for MI.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "ifproptrue":"multipleinstance"
-		                },
 						{
 							"id":"isselectable",
 							"type":"Choice",
@@ -3978,7 +3936,7 @@
 						},
 						{
 							"id":"assignments",
-							"type":"Visualdataassignment",
+							"type":"Dataassignment",
 							"title":"Assignments",
 							"value":"Message",
 							"description":"",
@@ -4037,7 +3995,7 @@
 		                    "readonly":false,
 		                    "optional":true,
 		                    "simulation" : true,
-		                    "fordistribution":"uniform",
+		                    "fordistribution":"uniform|random",
 		                    "min" : "0"
 		                },
 		                {
@@ -4050,7 +4008,7 @@
 		                    "readonly":false,
 		                    "optional":true,
 		                    "simulation" : true,
-		                    "fordistribution":"uniform",
+		                    "fordistribution":"uniform|random",
 		                    "min" : "0"
 		                },
 		                {
@@ -4079,10 +4037,53 @@
 		                    "min" : "0"
 		                },
 		                {
+		                    "id":"timeunit",
+		                    "type":"Choice",
+		                    "title":"Time Unit",
+		                    "value":"",
+		                    "description":"Time unit options (seconds, minutes, hours)",
+		                    "description_ja":"Time unit options (seconds, minutes, hours)",
+		                    "readonly":false,
+		                    "optional":true,
+		                    "simulation" : true,
+		                    "items": [
+		                        {
+		                            "id": "c1",
+		                            "title":"milliseconds",
+		                            "value":"ms"
+		                        },
+		                        {
+		                            "id": "c2",
+		                            "title": "seconds",
+		                            "value": "s"
+		                        },
+		                        {
+		                            "id": "c3",
+		                            "title": "minutes",
+		                            "value": "min"
+		                        },
+		                        {
+		                            "id": "c4",
+		                            "title": "hours",
+		                            "value": "hour"
+		                        },
+		                        {
+		                            "id": "c5",
+		                            "title": "days",
+		                            "value": "day"
+		                        },
+		                        {
+		                            "id": "c6",
+		                            "title": "years",
+		                            "value": "year"
+		                        }
+		                    ]
+		                },
+		                {
 		                    "id":"distributiontype",
 		                    "type":"Choice",
 		                    "title":"Distribution Type",
-		                    "value":"normal",
+		                    "value":"random",
 		                    "description":"",
 		                    "description_ja":"",
 		                    "readonly":false,
@@ -4100,6 +4101,11 @@
 		                            "value": "uniform"
 		                        },
 		                        {
+		                            "id": "c3",
+		                            "title": "random",
+		                            "value": "random"
+		                        },
+		                        {
 		                            "id": "c4",
 		                            "title": "poisson",
 		                            "value": "poisson"
@@ -4113,6 +4119,17 @@
 		                    "value":"0",
 		                    "description":"",
 		                    "description_ja":"",
+		                    "readonly":false,
+		                    "optional":true,
+		                    "simulation" : true,
+		                    "min" : "0"
+		                },
+		                {
+		                    "id":"currency",
+		                    "type":"String",
+		                    "title":"Currency",
+		                    "value":"",
+		                    "description":"Base currency (ISO 4217)",
 		                    "readonly":false,
 		                    "optional":true,
 		                    "simulation" : true,
@@ -4346,104 +4363,6 @@
 								}
 							]
 						},
-		                {
-		                    "id":"multipleinstance",
-		                    "type":"Choice",
-		                    "title":"Multiple Instance",
-		                    "value":"false",
-		                    "description":"Specifies whether the task is a multiple instance task.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "popular" : true,
-		                    "items": [
-		                        {
-		                            "id": "c1",
-		                            "title":"true",
-		                            "value":"true",
-		                            "refToView":"sequential"
-		                        },
-		                        {
-		                            "id": "c2",
-		                            "title": "false",
-		                            "value": "false",
-		                            "refToView":"none"
-		                        }
-		                    ]
-		                },
-		                {
-		                    "id":"multipleinstancecollectioninput",
-		                    "type":"Dynamicchoice",
-		                    "title":"MI collection input",
-		                    "value":"",
-		                    "description":"Sets the multiple instances collection input.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "ifproptrue":"multipleinstance",
-		                    "items": [
-		                        {
-		                            "id": "c1",
-		                            "title":"vardefs",
-		                            "value":"$.properties.vardefs"
-		                        },
-		                        {
-		                            "id": "c2",
-		                            "title": "globals",
-		                            "value": "$.properties.globals"
-		                        }
-		                    ]
-		                },
-		                {
-		                    "id":"multipleinstancecollectionoutput",
-		                    "type":"Dynamicchoice",
-		                    "title":"MI collection output",
-		                    "value":"",
-		                    "description":"Sets the multiple instances collection output.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "ifproptrue":"multipleinstance",
-		                    "items": [
-		                        {
-		                            "id": "c1",
-		                            "title":"vardefs",
-		                            "value":"$.properties.vardefs"
-		                        },
-		                        {
-		                            "id": "c2",
-		                            "title": "globals",
-		                            "value": "$.properties.globals"
-		                        }
-		                    ]
-		                },
-		                {
-		                    "id":"multipleinstancedatainput",
-		                    "type":"Dynamicdatainput",
-		                    "title":"MI data input",
-		                    "value":"",
-		                    "description":"Sets a data input for MI.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "ifproptrue":"multipleinstance"
-		                },
-		                {
-		                    "id":"multipleinstancedataoutput",
-		                    "type":"Dynamicdatoutput",
-		                    "title":"MI data output",
-		                    "value":"",
-		                    "description":"Sets a data output for MI.",
-		                    "description_ja":"",
-		                    "readonly":false,
-		                    "optional":true,
-		                    "fortasktypes":"None|Send|Receive|User|Manual|Service",
-		                    "ifproptrue":"multipleinstance"
-		                },
 						{
 							"id":"isselectable",
 							"type":"Choice",
@@ -4508,7 +4427,7 @@
 							"id":"datainputset",
 							"type":"Datainput",
 							"title":"DataInputSet",
-							"value":"From:String,To:String,Body:String,Subject:String",
+							"value":"To:String,From:String,Subject:String,Body:String",
 							"description":"An InputSet is a collection of DataInput elements that together define a valid set of data inputs.",
 							"description_ja":"InputSetは、データ入力の有効なセットを合わせて定義するDataInputエレメントのコレクションです。",
 							"readonly":false,
@@ -4526,9 +4445,9 @@
 						},
 						{
 							"id":"assignments",
-							"type":"Visualdataassignment",
+							"type":"Dataassignment",
 							"title":"Assignments",
-							"value":"From=,To=,Body=,Subject",
+							"value":"To=,From=,Subject=,Body",
 							"description":"",
 							"readonly":false,
 							"optional":true,
@@ -4585,7 +4504,7 @@
 		                    "readonly":false,
 		                    "optional":true,
 		                    "simulation" : true,
-		                    "fordistribution":"uniform",
+		                    "fordistribution":"uniform|random",
 		                    "min" : "0"
 		                },
 		                {
@@ -4598,7 +4517,7 @@
 		                    "readonly":false,
 		                    "optional":true,
 		                    "simulation" : true,
-		                    "fordistribution":"uniform",
+		                    "fordistribution":"uniform|random",
 		                    "min" : "0"
 		                },
 		                {
@@ -4627,10 +4546,53 @@
 		                    "min" : "0"
 		                },
 		                {
+		                    "id":"timeunit",
+		                    "type":"Choice",
+		                    "title":"Time Unit",
+		                    "value":"",
+		                    "description":"Time unit options (seconds, minutes, hours)",
+		                    "description_ja":"Time unit options (seconds, minutes, hours)",
+		                    "readonly":false,
+		                    "optional":true,
+		                    "simulation" : true,
+		                    "items": [
+		                        {
+		                            "id": "c1",
+		                            "title":"milliseconds",
+		                            "value":"ms"
+		                        },
+		                        {
+		                            "id": "c2",
+		                            "title": "seconds",
+		                            "value": "s"
+		                        },
+		                        {
+		                            "id": "c3",
+		                            "title": "minutes",
+		                            "value": "min"
+		                        },
+		                        {
+		                            "id": "c4",
+		                            "title": "hours",
+		                            "value": "hour"
+		                        },
+		                        {
+		                            "id": "c5",
+		                            "title": "days",
+		                            "value": "day"
+		                        },
+		                        {
+		                            "id": "c6",
+		                            "title": "years",
+		                            "value": "year"
+		                        }
+		                    ]
+		                },
+		                {
 		                    "id":"distributiontype",
 		                    "type":"Choice",
 		                    "title":"Distribution Type",
-		                    "value":"normal",
+		                    "value":"random",
 		                    "description":"",
 		                    "description_ja":"",
 		                    "readonly":false,
@@ -4648,6 +4610,11 @@
 		                            "value": "uniform"
 		                        },
 		                        {
+		                            "id": "c3",
+		                            "title": "random",
+		                            "value": "random"
+		                        },
+		                        {
 		                            "id": "c4",
 		                            "title": "poisson",
 		                            "value": "poisson"
@@ -4661,6 +4628,17 @@
 		                    "value":"0",
 		                    "description":"",
 		                    "description_ja":"",
+		                    "readonly":false,
+		                    "optional":true,
+		                    "simulation" : true,
+		                    "min" : "0"
+		                },
+		                {
+		                    "id":"currency",
+		                    "type":"String",
+		                    "title":"Currency",
+		                    "value":"",
+		                    "description":"Base currency (ISO 4217)",
 		                    "readonly":false,
 		                    "optional":true,
 		                    "simulation" : true,
@@ -5890,7 +5868,10 @@
 				"flowElement",
 				"activity",
 				"subprocess",
-				"properties"
+				"interrupting",
+				"loopcharacteristics",
+				"properties",
+				"iospecification"
 			],
 			"properties" :		[
 				{
@@ -6095,8 +6076,8 @@
 				"canContainArtifacts",
 				"EventActivitiesMorph"
 			]
-		}, **/
-		{
+		}, 
+		/** {
 			"type" : 			"node",
 			"id" :				"EventSubprocess",
 			"title" :			"Event-Subprocess",
@@ -6108,7 +6089,12 @@
  			"layout" : 			[{"type" : "layout.bpmn2_0.subprocess"}],
 			"propertyPackages" :[
 				"baseAttributes",
-				"flowElement"
+				"flowElement",
+				"activity",
+				"subprocess",
+				"loopcharacteristics",
+				"properties",
+				"iospecification"
 			],
 			"properties" :		[
 				{
@@ -6231,14 +6217,38 @@
 							"value":"72"
 						}
 					]
+				},	
+				{
+					"id":"isatransaction",
+					"type":"Boolean",
+					"title":"is a Transaction",
+					"value":false,
+					"description":"A Transaction is a set of activities that logically belongs together; it might follow a specified transaction protocol.",
+					"description_ja":"トランザクションは、論理的にまとめられているアクティビティのセットです。指定されたトランザクションプロトコルに従います。",
+					"readonly":true,
+					"optional":false
+				},
+				{
+					"id":"callacitivity",
+					"type":"Boolean",
+					"title":"is a Call Activity",
+					"value":false,
+					"description":"a Call Activity is a wrapper for a globally defined Sub-Process that is reused in the current process.",
+                                        "description_ja":"コールアクティビティは、現在のプロセスで再利用されているグローバル定義サブプロセスのラッパーです。",
+					"readonly":true,
+					"optional":"true"
 				}
 			],
 			"roles"	:			[
 				"all",
 				"fromtoall",
-				"canContainArtifacts"
+				"canContainArtifacts",
+				"EventActivitiesMorph"
 			]
-		},
+		}, **/
+		
+		// Gateways
+		
 		{
 			"type" : 			"node",
 			"id" :				"Exclusive_Databased_Gateway",
@@ -6347,10 +6357,10 @@
 				},		
 				{
 					"id":"defaultgate",
-					"type":"Dynamicgatewayconnections",
+					"type":"String",
 					"title":"Default gate",
 					"value":"",
-					"description":"The default gateway connection.",
+					"description":"",
 					"readonly":false,
 					"optional":true,
 					"refToView":"",
@@ -8947,7 +8957,7 @@
 				},
 				{
 					"id":"signalref",
-					"type":"String",
+					"type":"Text",
 					"title":"SignalRef",
 					"value":"",
 					"description":"",
@@ -9315,6 +9325,49 @@
                     "optional":true,
                     "simulation" : true,
                     "min" : "0"
+                },
+                {
+                    "id":"timeunit",
+                    "type":"Choice",
+                    "title":"Time Unit",
+                    "value":"",
+                    "description":"Time unit options (seconds, minutes, hours)",
+                    "description_ja":"Time unit options (seconds, minutes, hours)",
+                    "readonly":false,
+                    "optional":true,
+                    "simulation" : true,
+                    "items": [
+                        {
+                            "id": "c1",
+                            "title":"milliseconds",
+                            "value":"ms"
+                        },
+                        {
+                            "id": "c2",
+                            "title": "seconds",
+                            "value": "s"
+                        },
+                        {
+                            "id": "c3",
+                            "title": "minutes",
+                            "value": "min"
+                        },
+                        {
+                            "id": "c4",
+                            "title": "hours",
+                            "value": "hour"
+                        },
+                        {
+                            "id": "c5",
+                            "title": "days",
+                            "value": "day"
+                        },
+                        {
+                            "id": "c6",
+                            "title": "years",
+                            "value": "year"
+                        }
+                    ]
                 }
 			]
 		},
@@ -9901,7 +9954,7 @@
 				},**/
 				{
 					"id":"signalref",
-					"type":"String",
+					"type":"Text",
 					"title":"SignalRef",
 					"value":"",
 					"description":"",
@@ -10487,7 +10540,7 @@
 				},**/
 				{
 					"id":"signalref",
-					"type":"String",
+					"type":"Text",
 					"title":"SignalRef",
 					"value":"",
 					"description":"",
@@ -11228,7 +11281,7 @@
 				},**/
 				{
 					"id":"signalref",
-					"type":"String",
+					"type":"Text",
 					"title":"SignalRef",
 					"value":"",
 					"description":"",
@@ -11848,8 +11901,7 @@
 					{
 						"from":"Exclusive_Eventbased_Gateway",
 						"to":["FromEventbasedGateway"]
-					},
-					{
+					},{
 						"from" : "EventbasedGateway",
 						"to" : ["FromEventbasedGateway"]
 					}
@@ -11888,16 +11940,7 @@
 					{
 						"from":"Task",
 						"to":["IntermediateEventOnActivityBoundary"]
-					},
-					                        {
-					                                                "from":"Log",
-					                                                "to":["IntermediateEventOnActivityBoundary"]
-					                        }
-										,                        {
-					                                                "from":"Email",
-					                                                "to":["IntermediateEventOnActivityBoundary"]
-					                        }
-										
+					}
 				]
 			},
 			{
