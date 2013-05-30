@@ -51,7 +51,7 @@
         <plugin name="ORYX.Plugins.FormEditing"/>
         <localhistory enabled="false" timeout="60000"/>
         <storesvgonsave enabled="false"/>
-        <repository id="vfs">
+        <!--<repository id="vfs">-->
             <!-- acceptable attributes for parameter
                 name - name of the property
                 value - value of the property
@@ -69,8 +69,8 @@
             <!--<parameter name="password" value="test1234" />-->
             <!--<parameter name="origin" value="https://github.com/guvnorngtestuser1/guvnorng-playground.git" />-->
             <!--<parameter name="fetch.cmd" value="?fetch" />-->
-						<parameter name="org.kie.nio.git.dir" value="${env.OPENSHIFT_DATA_DIR}" system-property="true"/>
-					</repository>
+            <!--<parameter name="org.kie.nio.git.dir" value="/tmp/designer-git-repo" system-property="true"/>    &ndash;&gt;-->
+        <!--</repository>-->
 	<!--
         <repository id="guvnor">
             <property name="protocol" value="http" />
