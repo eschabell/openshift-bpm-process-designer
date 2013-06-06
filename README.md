@@ -32,7 +32,7 @@ Just follow the link provided to the designer login:
 Releases
 ---------
 
+- v1.1 running on JBoss AS 7.1, standalone web process designer v6.
+
 - v1.0 running on JBoss EAP 6.0, standalone web process designer 2.5.
 
-- v1.1 running on JBoss AS 7.1, standalone web process designer v6.
- 
