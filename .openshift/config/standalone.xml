@@ -34,7 +34,7 @@
         <extension module="org.jboss.as.weld"/>
     </extensions>
 <system-properties>
-	<property name="org.kie.nio.git.dir" value="${OPENSHIFT_JBOSSAS_DIR}"/>
+	<property name="org.kie.nio.git.dir" value="jboss.home.dir"/>
   <property name="org.kie.nio.git.deamon.enabled" value="false" />
 </system-properties>
     <management>
