@@ -17,7 +17,8 @@ ORYX.Plugins.LocalHistory = Clazz.extend({
 
         if(this.haveSupportForLocalHistory()) {
             this.setupAndLoadHistoryData();
-            this.startStoring();
+            this.enableLocalHistory();
+            //this.startStoring();
         }
 
         this.facade.offer({
@@ -162,7 +163,7 @@ ORYX.Plugins.LocalHistory = Clazz.extend({
                 dataIndex: 'svg',
                 renderer: function(val) {
                     if(val && val.length > 0) {
-                        return '<center><img src="'+ ORYX.PATH+'images/page_white_picture.png" onclick="resetSVGView(\''+val+'\');new SVGViewer({title: \'Local History Process Image\', width: \'650\', height: \'450\', autoScroll: true, fixedcenter: true, src: \''+'\',hideAction: \'close\'}).show();" alt="Click to view Process Image"/></center>';
+                        return '<center><img src="'+ ORYX.BASE_FILE_PATH +'images/page_white_picture.png" onclick="resetSVGView(\''+val+'\');new SVGViewer({title: \'Local History Process Image\', width: \'650\', height: \'450\', autoScroll: true, fixedcenter: true, src: \''+'\',hideAction: \'close\'}).show();" alt="Click to view Process Image"/></center>';
                     } else {
                         return "<center>Process image not available.</center>";
                     }
@@ -288,16 +289,31 @@ ORYX.Plugins.LocalHistory = Clazz.extend({
         }
     },
     addToStore : function(item) {
-        this.historyStore.insert(0, new this.historyEntry({
-            processid: item.processid,
-            processname: item.processname,
-            processpkg: item.processpkg,
-            processversion: item.processversion,
-            timestamp: new Date(item.timestamp).format("d.m.Y H:i:s"),
-            json: item.json,
-            svg:  item.svg
-        }));
-        this.historyStore.commitChanges();
+        if(this.historyStore.data.length > 0) {
+            if(this.historyStore.getAt(0).data['json'] != item.json) {
+                this.historyStore.insert(0, new this.historyEntry({
+                    processid: item.processid,
+                    processname: item.processname,
+                    processpkg: item.processpkg,
+                    processversion: item.processversion,
+                    timestamp: new Date(item.timestamp).format("d.m.Y H:i:s"),
+                    json: item.json,
+                    svg:  item.svg
+                }));
+                this.historyStore.commitChanges();
+            }
+        } else {
+            this.historyStore.insert(0, new this.historyEntry({
+                processid: item.processid,
+                processname: item.processname,
+                processpkg: item.processpkg,
+                processversion: item.processversion,
+                timestamp: new Date(item.timestamp).format("d.m.Y H:i:s"),
+                json: item.json,
+                svg:  item.svg
+            }));
+            this.historyStore.commitChanges();
+        }
     },
     clearLocalHistory : function() {
         this.historyStore.removeAll();
@@ -324,12 +340,19 @@ ORYX.Plugins.LocalHistory = Clazz.extend({
             this.storage.removeItem(this.uid);
             this.fail && (this.storage = false);
         } catch(e) {}
+
+        var localHistoryCookieVal = this._readCookie("designerlocalhistory");
+        var enabledFromCookie = false;
+        if(localHistoryCookieVal != null && localHistoryCookieVal == "true") {
+            enabledFromCookie = true;
+            return this.storage && enabledFromCookie;
+        }
         return this.storage && ORYX.LOCAL_HISTORY_ENABLED;
     },
     addToHistory : function() {
         var processJSON = ORYX.EDITOR.getSerializedJSON();
         var formattedSvgDOM = DataManager.serialize(ORYX.EDITOR.getCanvas().getSVGRepresentation(false));
-        var processName = jsonPath(processJSON.evalJSON(), "$.properties.name");
+        var processName = jsonPath(processJSON.evalJSON(), "$.properties.processn");
         var processPackage = jsonPath(processJSON.evalJSON(), "$.properties.package");
         var processId = jsonPath(processJSON.evalJSON(), "$.properties.id");
         var processVersion = jsonPath(processJSON.evalJSON(), "$.properties.version");
@@ -378,6 +401,7 @@ ORYX.Plugins.LocalHistory = Clazz.extend({
     },
     disableLocalHistory: function() {
         ORYX.LOCAL_HISTORY_ENABLED = false;
+        this._createCookie("designerlocalhistory", "false", 365);
         this.stopStoring();
         this.facade.raiseEvent({type: ORYX.CONFIG.EVENT_STENCIL_SET_LOADED});
         this.facade.raiseEvent({
@@ -389,6 +413,7 @@ ORYX.Plugins.LocalHistory = Clazz.extend({
     },
     enableLocalHistory: function() {
         ORYX.LOCAL_HISTORY_ENABLED = true;
+        this._createCookie("designerlocalhistory", "true", 365);
         this.setupAndLoadHistoryData();
         this.startStoring();
         this.facade.raiseEvent({type: ORYX.CONFIG.EVENT_STENCIL_SET_LOADED});
@@ -404,6 +429,28 @@ ORYX.Plugins.LocalHistory = Clazz.extend({
     },
     stopStoring: function() {
         clearInterval(this.historyInterval);
+    },
+    _createCookie: function(name, value, days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else {
+            var expires = "";
+        }
+
+        document.cookie = name+"="+value+expires+"; path=/";
+    },
+    _readCookie: function(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
     }
 });
 

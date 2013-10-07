@@ -10,7 +10,7 @@ ORYX.Plugins.Theme = Clazz.extend({
 		
 		var ajaxObj = new XMLHttpRequest;
 		var url = ORYX.PATH + "themes";
-	    var params  = "action=getThemeNames&profile=" + ORYX.PROFILE;
+	    var params  = "action=getThemeNames&profile=" + ORYX.PROFILE + "&uuid=" + ORYX.UUID;
 	    ajaxObj.open("POST",url,false);
 	    ajaxObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	    ajaxObj.send(params);
@@ -21,7 +21,7 @@ ORYX.Plugins.Theme = Clazz.extend({
 	   			 this.facade.offer({
 	   				'name': themeNamesArray[i],
 	   				'functionality': this.applyTheme.bind(this, themeNamesArray[i]),
-	   				'group': ORYX.I18N.View.jbpmgroup,
+	   				'group': 'colorpickergroup',
 	   				dropDownGroupIcon : ORYX.BASE_FILE_PATH + "images/colorpicker.gif",
 	   				'icon': ORYX.BASE_FILE_PATH + "images/colorize.png",
 	   				'description': "Apply " + themeNamesArray[i] + " Color Theme",
@@ -84,7 +84,8 @@ ORYX.Plugins.Theme = Clazz.extend({
             },
             params: {
             	action: 'getThemeJSON',
-            	profile: ORYX.PROFILE
+            	profile: ORYX.PROFILE,
+                uuid: ORYX.UUID
             }
         });
 	},

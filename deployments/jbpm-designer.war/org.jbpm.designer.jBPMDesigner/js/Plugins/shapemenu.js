@@ -234,7 +234,7 @@ ORYX.Plugins.ShapeMenuPlugin = {
 		
 		var utfbutton = new ORYX.Plugins.ShapeMenuButton({
 			callback:		this.editTaskForm.bind(this), 
-			icon: 			ORYX.BASE_FILE_PATH + 'images/human_task_form.png',
+			icon: 			ORYX.BASE_FILE_PATH + 'images/processforms.png',
 			align: 			ORYX.CONFIG.SHAPEMENU_TOP,
 			group:			1,
 			msg:			'Edit Task Form'
@@ -395,10 +395,10 @@ ORYX.Plugins.ShapeMenuPlugin = {
 	showDictionaryButton: function() {
 		this.dictionaryButton.prepareToShow();
 	},
-	
+
 	showTaskFormButton : function() {
 		if(this.currentShapes && this.currentShapes[0] && this.currentShapes[0].properties && this.currentShapes[0].properties['oryx-tasktype'] && 
-				this.currentShapes[0].properties['oryx-tasktype'] == "User") {
+				this.currentShapes[0].properties['oryx-tasktype'] == "User" && ORYX.PRESET_PERSPECTIVE != "ruleflow") {
 			this.taskFormButton.prepareToShow();
 		}
 	},
@@ -446,7 +446,7 @@ ORYX.Plugins.ShapeMenuPlugin = {
             if(elements[0].properties["oryx-tasktype"] != "User") {
                 var menuItem = new Ext.menu.Item({
                     text: 'User Task',
-                    icon: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.user.png',
+                    icon: ORYX.BASE_FILE_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.user.png',
                     disabled: false,
                     disabledClass: ORYX.CONFIG.MORPHITEM_DISABLED,
                     handler: (function() { this.updateTaskType(elements[0], 'User'); }).bind(this)
@@ -456,7 +456,7 @@ ORYX.Plugins.ShapeMenuPlugin = {
             if(elements[0].properties["oryx-tasktype"] != "Send") {
                 var menuItem = new Ext.menu.Item({
                     text: 'Send Task',
-                    icon: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.send.png',
+                    icon: ORYX.BASE_FILE_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.send.png',
                     disabled: false,
                     disabledClass: ORYX.CONFIG.MORPHITEM_DISABLED,
                     handler: (function() { this.updateTaskType(elements[0], 'Send'); }).bind(this)
@@ -466,7 +466,7 @@ ORYX.Plugins.ShapeMenuPlugin = {
             if(elements[0].properties["oryx-tasktype"] != "Receive") {
                 var menuItem = new Ext.menu.Item({
                     text: 'Receive Task',
-                    icon: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.receive.png',
+                    icon: ORYX.BASE_FILE_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.receive.png',
                     disabled: false,
                     disabledClass: ORYX.CONFIG.MORPHITEM_DISABLED,
                     handler: (function() { this.updateTaskType(elements[0], 'Receive'); }).bind(this)
@@ -476,7 +476,7 @@ ORYX.Plugins.ShapeMenuPlugin = {
             if(elements[0].properties["oryx-tasktype"] != "Manual") {
                 var menuItem = new Ext.menu.Item({
                     text: 'Manual Task',
-                    icon: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.manual.png',
+                    icon: ORYX.BASE_FILE_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.manual.png',
                     disabled: false,
                     disabledClass: ORYX.CONFIG.MORPHITEM_DISABLED,
                     handler: (function() { this.updateTaskType(elements[0], 'Manual'); }).bind(this)
@@ -486,7 +486,7 @@ ORYX.Plugins.ShapeMenuPlugin = {
             if(elements[0].properties["oryx-tasktype"] != "Service") {
                 var menuItem = new Ext.menu.Item({
                     text: 'Service Task',
-                    icon: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.service.png',
+                    icon: ORYX.BASE_FILE_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.service.png',
                     disabled: false,
                     disabledClass: ORYX.CONFIG.MORPHITEM_DISABLED,
                     handler: (function() { this.updateTaskType(elements[0], 'Service'); }).bind(this)
@@ -496,7 +496,7 @@ ORYX.Plugins.ShapeMenuPlugin = {
             if(elements[0].properties["oryx-tasktype"] != "Business Rule") {
                 var menuItem = new Ext.menu.Item({
                     text: 'Business Rule Task',
-                    icon: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.business.rule.png',
+                    icon: ORYX.BASE_FILE_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.business.rule.png',
                     disabled: false,
                     disabledClass: ORYX.CONFIG.MORPHITEM_DISABLED,
                     handler: (function() { this.updateTaskType(elements[0], 'Business Rule'); }).bind(this)
@@ -506,7 +506,7 @@ ORYX.Plugins.ShapeMenuPlugin = {
             if(elements[0].properties["oryx-tasktype"] != "Script") {
                 var menuItem = new Ext.menu.Item({
                     text: 'Script Task',
-                    icon: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.script.png',
+                    icon: ORYX.BASE_FILE_PATH + 'stencilsets/bpmn2.0jbpm/icons/activity/list/type.script.png',
                     disabled: false,
                     disabledClass: ORYX.CONFIG.MORPHITEM_DISABLED,
                     handler: (function() { this.updateTaskType(elements[0], 'Script'); }).bind(this)
@@ -519,14 +519,16 @@ ORYX.Plugins.ShapeMenuPlugin = {
 		// populate morph menu with the possible morph stencils ordered by their position
 		possibleMorphs = possibleMorphs.sortBy(function(stencil) { return stencil.position(); });
 		possibleMorphs.each((function(morph) {
-			var menuItem = new Ext.menu.Item({
-				text: morph.title(), 
-				icon: morph.icon(), 
-				disabled: morph.id()==elements[0].getStencil().id(),
-				disabledClass: ORYX.CONFIG.MORPHITEM_DISABLED,
-				handler: (function() { this.morphShape(elements[0], morph); }).bind(this) 
-			});
-			this.morphMenu.add(menuItem);
+            if(!(elements[0].properties["oryx-nomorph"] && elements[0].properties["oryx-nomorph"] == "true")) {
+                var menuItem = new Ext.menu.Item({
+                    text: morph.title(),
+                    icon: morph.icon(),
+                    disabled: morph.id()==elements[0].getStencil().id(),
+                    disabledClass: ORYX.CONFIG.MORPHITEM_DISABLED,
+                    handler: (function() { this.morphShape(elements[0], morph); }).bind(this)
+                });
+                this.morphMenu.add(menuItem);
+            }
 		}).bind(this));
 
 		this.morphButton.prepareToShow();
@@ -868,6 +870,12 @@ ORYX.Plugins.ShapeMenuPlugin = {
             shape.setProperty("oryx-tasktype", shapeTaskType);
             shape.setProperty("oryx-multipleinstance", false);
             shape.refresh();
+
+            this.facade.setSelection([shape]);
+            this.facade.raiseEvent({
+                type: ORYX.CONFIG.EVENT_LOADED,
+                elements: [shape]
+            });
         }
     },
 	

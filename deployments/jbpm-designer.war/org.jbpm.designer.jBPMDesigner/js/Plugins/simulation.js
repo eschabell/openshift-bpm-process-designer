@@ -11,9 +11,9 @@ ORYX.Plugins.Simulation = Clazz.extend({
 		this.facade.offer({
 			'name': "Process Paths",
 			'functionality': this.findPaths.bind(this),
-			'group': "simulation",
+			'group': "validationandsimulation",
 			'icon': ORYX.BASE_FILE_PATH + "images/path.png",
-			dropDownGroupIcon : ORYX.BASE_FILE_PATH + "images/lightbulb.gif",
+			dropDownGroupIcon : ORYX.BASE_FILE_PATH + "images/simulation.png",
 			'description': "Display Process Paths",
 			'index': 1,
 			'minShape': 0,
@@ -33,9 +33,9 @@ ORYX.Plugins.Simulation = Clazz.extend({
 		this.facade.offer({
 			'name': "Run Simulation",
 			'functionality': this.runSimulation.bind(this),
-			'group': "simulation",
+			'group': "validationandsimulation",
 			'icon': ORYX.BASE_FILE_PATH + "images/control_play.png",
-			dropDownGroupIcon : ORYX.BASE_FILE_PATH + "images/lightbulb.gif",
+			dropDownGroupIcon : ORYX.BASE_FILE_PATH + "images/simulation.png",
 			'description': "Run Process Simulation",
 			'index': 2,
 			'minShape': 0,
@@ -400,7 +400,7 @@ ORYX.Plugins.Simulation = Clazz.extend({
 	            width: 120
 	        },
 	        {
-	        	fieldLabel: 'Inteval',
+	        	fieldLabel: 'Interval',
 	            name: 'interval',
 	            allowBlank:false,
 	            allowDecimals:false,

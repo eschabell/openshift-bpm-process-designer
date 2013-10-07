@@ -66,6 +66,7 @@ ORYX.Plugins.PropertyWindow = {
 		// the properties array
 		this.popularProperties = [];
 		this.simulationProperties = [];
+        this.displayProperties = [];
 		this.properties = [];
 		
 		/* The currently selected shapes whos properties will shown */
@@ -84,7 +85,8 @@ ORYX.Plugins.PropertyWindow = {
 				dataIndex: 'name',
 				width: 90,
 				sortable: true,
-				renderer: this.tooltipRenderer.bind(this)
+				renderer: this.tooltipRenderer.bind(this),
+                css: 'font-weight: bold;'
 			}, {
 				//id: 'value',
 				header: ORYX.I18N.PropertyWindow.value,
@@ -369,7 +371,12 @@ ORYX.Plugins.PropertyWindow = {
 	setPropertyWindowTitle: function() {
 		if(this.shapeSelection.shapes.length == 1) {
 			// add the name of the stencil of the selected shape to the title
-				region.setTitle(ORYX.I18N.PropertyWindow.title +' ('+this.shapeSelection.shapes.first().getStencil().title()+')' );
+                var nodeTitle = this.shapeSelection.shapes.first().getStencil().title();
+            if(this.shapeSelection.shapes.first() && this.shapeSelection.shapes.first().properties && this.shapeSelection.shapes.first().properties['oryx-tasktype'] &&
+                this.shapeSelection.shapes.first().properties['oryx-tasktype'].length > 0) {
+                nodeTitle = this.shapeSelection.shapes.first().properties['oryx-tasktype'];
+            }
+				region.setTitle(ORYX.I18N.PropertyWindow.title +' ('+ nodeTitle +')' );
 		} else {
 			region.setTitle(ORYX.I18N.PropertyWindow.title +' ('
 							+ this.shapeSelection.shapes.length
@@ -463,7 +470,7 @@ ORYX.Plugins.PropertyWindow = {
 	onSelectionChanged: function(event) {
 		/* Event to call afterEdit method */
 		this.grid.stopEditing();
-		
+
 		/* Selected shapes */
 		this.shapeSelection.shapes = event.elements;
 		
@@ -471,7 +478,18 @@ ORYX.Plugins.PropertyWindow = {
 		if(event.elements) {
 			if(event.elements.length == 0) {
 				this.shapeSelection.shapes = [this.facade.getCanvas()];
-			}
+			} else {
+                var elength = this.shapeSelection.shapes.length;
+                while(elength--) {
+                    var nextNode = this.shapeSelection.shapes[elength];
+                    if(nextNode && (nextNode instanceof ORYX.Core.Node || nextNode instanceof ORYX.Core.Edge) && nextNode.properties["oryx-isselectable"] == "false") {
+                        this.shapeSelection.shapes.splice(elength);
+                    }
+                }
+                if(this.shapeSelection.shapes.length == 0) {
+                    this.shapeSelection.shapes = [this.facade.getCanvas()];
+                }
+            }
 		} else {
 			this.shapeSelection.shapes = [this.facade.getCanvas()];
 		}
@@ -497,6 +515,7 @@ ORYX.Plugins.PropertyWindow = {
 		this.properties = [];
 		this.popularProperties = [];
 		this.simulationProperties = [];
+        this.displayProperties = [];
 		
 		if(this.shapeSelection.commonProperties) {
 			
@@ -1158,13 +1177,9 @@ ORYX.Plugins.PropertyWindow = {
 				}
 				
 				// Push to the properties-array
-				if(pair.visible() && (pair.id() != "origbordercolor" && pair.id() != "origbgcolor" && pair.id() != "isselectable")) {
+				if((pair.visible() && pair.visible() == true) && pair.hidden() != true && (pair.id() != "origbordercolor" && pair.id() != "origbgcolor" && pair.id() != "isselectable")) {
 					var proceed = true;
-					if(this.shapeSelection.shapes.length == 1 && (this.shapeSelection.shapes.first().getStencil().idWithoutNs() == "Task" ||
-                           this.shapeSelection.shapes.first().getStencil().idWithoutNs() == "IntermediateEscalationEventThrowing" ||
-                           this.shapeSelection.shapes.first().getStencil().idWithoutNs() == "IntermediateEvent" ||
-                           this.shapeSelection.shapes.first().getStencil().idWithoutNs() == "IntermediateMessageEventThrowing" ||
-                           this.shapeSelection.shapes.first().getStencil().idWithoutNs() == "IntermediateSignalEventThrowing")) {
+					if(this.shapeSelection.shapes.length == 1) {
 						if(pair.fortasktypes() && pair.fortasktypes().length > 0) {
 							var foundtasktype = false;
 							var tts = pair.fortasktypes().split("|");
@@ -1190,7 +1205,7 @@ ORYX.Plugins.PropertyWindow = {
                             }
                         }
 
-						
+
 						if(pair.fordistribution() && pair.fordistribution().length > 0) {
 							var founddistribution = false;
 							var tts = pair.fordistribution().split("|");
@@ -1207,26 +1222,32 @@ ORYX.Plugins.PropertyWindow = {
 					}
 					
 					if(proceed) {
-						// Popular Properties are those with a refToView set or those which are set to be popular
-						if (pair.refToView()[0] || refToViewFlag || pair.popular()) {
+						if (pair.popular()) {
 							pair.setPopular();
 						}
 						
 						if (pair.simulation()) {
 							pair.setSimulation();
 						}
-						
-						
-						if(pair.popular()) {
-							this.popularProperties.push([ORYX.I18N.PropertyWindow.oftenUsed, name, attribute, icons, {
-								editor: editorGrid,
-								propId: key,
-								type: pair.type(),
-								tooltip: pair.description(),
-								renderer: editorRenderer,
-								labelProvider: this.getLabelProvider(pair)
-							}]);
-						} else if(pair.simulation()) {
+
+                        if(pair.display()) {
+                            pair.setDisplay();
+                        }
+
+                        if(pair.extra()) {
+                            pair.setExtra();
+                        }
+
+                        if(pair.extra()) {
+                            this.properties.push([ORYX.I18N.PropertyWindow.moreProps, name, attribute, icons, {
+                                editor: editorGrid,
+                                propId: key,
+                                type: pair.type(),
+                                tooltip: pair.description(),
+                                renderer: editorRenderer,
+                                labelProvider: this.getLabelProvider(pair)
+                            }]);
+                        } else if(pair.simulation()) {
 							this.simulationProperties.push([ORYX.I18N.PropertyWindow.simulationProps, name, attribute, icons, {
 								editor: editorGrid,
 								propId: key,
@@ -1235,15 +1256,24 @@ ORYX.Plugins.PropertyWindow = {
 								renderer: editorRenderer,
 								labelProvider: this.getLabelProvider(pair)
 							}]);
-						} else {	
-							this.properties.push([ORYX.I18N.PropertyWindow.moreProps, name, attribute, icons, {
-								editor: editorGrid,
-								propId: key,
-								type: pair.type(),
-								tooltip: pair.description(),
-								renderer: editorRenderer,
-								labelProvider: this.getLabelProvider(pair)
-							}]);
+                        } else if(pair.display()) {
+                            this.displayProperties.push([ORYX.I18N.PropertyWindow.displayProps, name, attribute, icons, {
+                                editor: editorGrid,
+                                propId: key,
+                                type: pair.type(),
+                                tooltip: pair.description(),
+                                renderer: editorRenderer,
+                                labelProvider: this.getLabelProvider(pair)
+                            }]);
+						} else {
+                            this.popularProperties.push([ORYX.I18N.PropertyWindow.oftenUsed, name, attribute, icons, {
+                                editor: editorGrid,
+                                propId: key,
+                                type: pair.type(),
+                                tooltip: pair.description(),
+                                renderer: editorRenderer,
+                                labelProvider: this.getLabelProvider(pair)
+                            }]);
 						}
 					}
 				}
@@ -1279,7 +1309,8 @@ ORYX.Plugins.PropertyWindow = {
 
 	setProperties: function() {
 		var partProps = this.popularProperties.concat(this.properties);
-		var props = partProps.concat(this.simulationProperties);
+		var partPropsOther = partProps.concat(this.simulationProperties);
+        var props = partPropsOther.concat(this.displayProperties);
 		this.dataSource.loadData(props);
 	}
 }
@@ -1936,7 +1967,8 @@ Ext.form.ComplexCustomField = Ext.extend(Ext.form.TriggerField,  {
                 });
             },
             params: {
-            	profile: ORYX.PROFILE
+            	profile: ORYX.PROFILE,
+                uuid: ORYX.UUID
             }
         });
 	}
@@ -2119,7 +2151,7 @@ Ext.form.ComplexNotificationsField = Ext.extend(Ext.form.TriggerField,  {
                 header: 'Expires At',
                 width: 100,
                 dataIndex: 'expires',
-                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \-\.\_]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \#\{\}\-\.\_]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             },
             {
@@ -2127,7 +2159,7 @@ Ext.form.ComplexNotificationsField = Ext.extend(Ext.form.TriggerField,  {
                 header: 'From',
                 width: 100,
                 dataIndex: 'from',
-                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \-\.\_\,]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \#\{\}\-\.\_\,]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             },
             {
@@ -2135,7 +2167,7 @@ Ext.form.ComplexNotificationsField = Ext.extend(Ext.form.TriggerField,  {
                 header: 'To Users',
                 width: 100,
                 dataIndex: 'tousers',
-                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \-\.\_\,]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \#\{\}\-\.\_\,]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             },
             {
@@ -2143,7 +2175,7 @@ Ext.form.ComplexNotificationsField = Ext.extend(Ext.form.TriggerField,  {
                 header: 'To Groups',
                 width: 100,
                 dataIndex: 'togroups',
-                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \-\.\_\,]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \#\{\}\-\.\_\,]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             },
             {
@@ -2151,7 +2183,7 @@ Ext.form.ComplexNotificationsField = Ext.extend(Ext.form.TriggerField,  {
                 header: 'Reply To',
                 width: 100,
                 dataIndex: 'replyto',
-                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \-\.\_\,]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \#\{\}\-\.\_\,]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             },
             {
@@ -2159,7 +2191,7 @@ Ext.form.ComplexNotificationsField = Ext.extend(Ext.form.TriggerField,  {
                 header: 'Subject',
                 width: 100,
                 dataIndex: 'subject',
-                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \-\.\_\,]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \#\{\}\-\.\_\,]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             },
             {
@@ -2428,7 +2460,7 @@ Ext.form.ComplexReassignmentField = Ext.extend(Ext.form.TriggerField,  {
                 header: 'Users',
                 width: 150,
                 dataIndex: 'users',
-                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \-\.\_\,]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \#\{\}\-\.\_\,]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             },
             {
@@ -2436,7 +2468,7 @@ Ext.form.ComplexReassignmentField = Ext.extend(Ext.form.TriggerField,  {
                 header: 'Groups',
                 width: 150,
                 dataIndex: 'groups',
-                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \-\.\_\,]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \#\{\}\-\.\_\,]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             },
             {
@@ -2444,7 +2476,7 @@ Ext.form.ComplexReassignmentField = Ext.extend(Ext.form.TriggerField,  {
                 header: 'Expires At',
                 width: 150,
                 dataIndex: 'expires',
-                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \-\.\_]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, regex: /^[a-z0-9 \#\{\}\-\.\_]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             },
             {
@@ -3066,9 +3098,12 @@ Ext.form.ComplexDataAssignmenField = Ext.extend(Ext.form.TriggerField,  {
                             if (!dataType){
                                 dataType = "java.lang.String";
                             }
-            				var escapedp = innerParts[1].replace(/\#\#/g , ",");
+                            var fromPart = innerParts[0];
+                            innerParts.shift(); // removes the first item from the array
+            				var escapedp = innerParts.join('=').replace(/\#\#/g , ",");
+                            escapedp = escapedp.replace(/\|\|/g , "=");
                             dataassignments.add(new DataAssignment({
-                                from: innerParts[0],
+                                from: fromPart,
                                 type: "is equal to",
                                 to: "",
                                 tostr: escapedp,
@@ -3258,6 +3293,7 @@ Ext.form.ComplexDataAssignmenField = Ext.extend(Ext.form.TriggerField,  {
                 				outValue += this.data['from'] + "->" + this.data['to'] + ",";
                 			} else if(this.data["type"] == "is equal to") {
                 				var escapedc = this.data['tostr'].replace(/,/g , "##");
+                                escapedc = escapedc.replace(/=/g, '||');
                 				outValue += this.data['from'] + "=" + escapedc + ",";
                 			}
                 		}
@@ -3394,7 +3430,7 @@ Ext.form.NameTypeEditor = Ext.extend(Ext.form.TriggerField,  {
     	typeData.push(objectType);
 
     	var gridId = Ext.id();
-    	Ext.form.VTypes["inputNameVal"] = /^[a-z0-9 \-\.\_]*$/i;
+    	Ext.form.VTypes["inputNameVal"] = /^[a-z0-9\-\.\_]*$/i;
         Ext.form.VTypes["inputNameText"] = 'Invalid name';
         Ext.form.VTypes["inputName"] = function(v){
         	return Ext.form.VTypes["inputNameVal"].test(v);
@@ -3410,7 +3446,7 @@ Ext.form.NameTypeEditor = Ext.extend(Ext.form.TriggerField,  {
                 header: 'Name',
                 width: 100,
                 dataIndex: 'name',
-                editor: new Ext.form.TextField({ allowBlank: true, vtype: 'inputName', regex: /^[a-z0-9 \-\.\_]*$/i }),
+                editor: new Ext.form.TextField({ allowBlank: true, vtype: 'inputName', regex: /^[a-z0-9\-\.\_]*$/i }),
                 renderer: Ext.util.Format.htmlEncode
             }, {
             	id: 'stype',

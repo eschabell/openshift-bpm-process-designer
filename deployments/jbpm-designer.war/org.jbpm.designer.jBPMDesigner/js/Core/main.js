@@ -77,7 +77,8 @@ ORYX.Editor = {
 		this._eventsQueue 	= [];
 		this.loadedPlugins 	= [];
 		this.pluginsData 	= [];
-		
+
+        this.simulationChartTimeUnit = "";
 		this.simulationChartData = "";
 		this.simulationEventData = "";
 		this.simulationEventAggregationData = "";
@@ -316,7 +317,7 @@ ORYX.Editor = {
 		        border: false,
 		        collapsible: true,  
 		        autoscroll: true,
-		        split: true,
+		        split: false,
 		        minSize: 100,
 		        maxSize: 500,
 		        autoheight: true,
@@ -398,7 +399,7 @@ ORYX.Editor = {
                     cls		: 'x-panel-editor-east',
                     width	: eastWidth,
                     autoScroll:true,
-                    split	: true,
+                    split	: false,
                     animate: true,
                     collapsible : true,
                     titleCollapse: true,
@@ -424,7 +425,7 @@ ORYX.Editor = {
 					cls		: 'x-panel-editor-west',
 					width	: ORYX.CONFIG.PANEL_LEFT_WIDTH || 200,
 					autoScroll:true,
-					split	: true,
+					split	: false,
 					animate: true,
 					collapsible : true,
 					titleCollapse: true,
@@ -467,10 +468,6 @@ ORYX.Editor = {
 			this.layout = new Ext.Panel( layout_config );
 		}
 		
-		//Generates the ORYX-Header
-		this._generateHeader();
-		
-		
 		// Set the editor to the center, and refresh the size
 	 	canvasParent.parentNode.setAttributeNS(null, 'align', 'center');
 	 	canvasParent.setAttributeNS(null, 'align', 'left');
@@ -479,60 +476,7 @@ ORYX.Editor = {
 			height	: ORYX.CONFIG.CANVAS_HEIGHT
 		});
 	},
-	
-	_generateHeader: function(){
-		
-		var headerPanel = new Ext.Panel({
-			height		: 0,
-			autoHeight	: false,
-			border		: false,
-			html		: "" 
-		});
 
-		var maActive 	= ORYX.MashupAPI && ORYX.MashupAPI.isUsed;
-		var maKey		= maActive ? ORYX.MashupAPI.key : "";
-		var maCanRun	= maActive ? ORYX.MashupAPI.canRun : false;	
-		var maIsRemoteM	= maActive ? ORYX.MashupAPI.isModelRemote : true;	
-		
-		var maModelImage= maIsRemoteM ? "<img src='"+ORYX.PATH+"images/page_white_put.png'/>" : "";
-		var maModelAuthI= maActive ? "<span class='mashupinfo'><img src='"+ORYX.PATH+"images/" +( maCanRun ? "plugin_error" : "plugin") +".png'/>" + maModelImage + "</span>" : "";
-		
-		
-		// Callback if the user changes
-		var fn = function(val){
-			
-			var publicText = ORYX.I18N.Oryx.notLoggedOn;
-			var user = val && val.identifier && val.identifier != "public" ? decodeURI(val.identifier.gsub('"', "")).replace(/\+/g," ") : "";
-			
-			if( user.length <= 0 ){
-				user 	= 	publicText;
-			}
-			
-			var content = 	"<div id='oryx_editor_header'>" +
-								"<a href=\""+ORYX.CONFIG.WEB_URL+"\" target=\"_blank\">" +
-									"<img src='"+ORYX.BASE_FILE_PATH+"images/oryx.small.gif' border=\"0\" />" +
-								"</a>" + 
-								"<span class='openid " + (publicText == user ? "not" : "") + "'>" + 
-									user + 
-									maModelAuthI + 
-								"</span>" + 
-								"<div style='clear: both;'/>" + 
-							"</div>";
-			
-			if( headerPanel.body ){
-				headerPanel.body.dom.innerHTML = content;
-			} else {
-				headerPanel.html = content
-			}
-		};	
-		
-		ORYX.Editor.Cookie.onChange(fn);
-		fn(ORYX.Editor.Cookie.getParams());
-		
-		// The oryx header
-		this.addToRegion("north", headerPanel );
-	},
-	
 	/**
 	 * adds a component to the specified region
 	 * 
@@ -1873,6 +1817,7 @@ ORYX.Editor = {
 			(elementController !== undefined) && (elementController.isSelectable);
 		var currentIsMovable = (elementController !== null) &&
 			(elementController !== undefined) && (elementController.isMovable);
+
 		var modifierKeyPressed = event.shiftKey || event.ctrlKey;
 		var noObjectsSelected = this.selection.length === 0;
 		var currentIsSelected = this.selection.member(elementController);
@@ -1880,7 +1825,6 @@ ORYX.Editor = {
 
 		// Rule #1: When there is nothing selected, select the clicked object.
 		if(currentIsSelectable && noObjectsSelected) {
-
 			this.setSelection([elementController]);
 
 			ORYX.Log.trace("Rule #1 applied for mouse down on %0", element.id);
@@ -1890,7 +1834,6 @@ ORYX.Editor = {
 		// the clicked object.
 		} else if(currentIsSelectable && !noObjectsSelected &&
 			!modifierKeyPressed && !currentIsSelected) {
-
 			this.setSelection([elementController]);
 
 			//var objectType = elementController.readAttributes();
@@ -1902,7 +1845,6 @@ ORYX.Editor = {
 		// not selected, add it to the selection.
 		} else if(currentIsSelectable && modifierKeyPressed
 			&& !currentIsSelected) {
-				
 			var newSelection = this.selection.clone();
 			newSelection.push(elementController)
 			this.setSelection(newSelection)
@@ -1912,7 +1854,6 @@ ORYX.Editor = {
 		// Rule #6
 		} else if(currentIsSelectable && currentIsSelected &&
 			modifierKeyPressed) {
-
 			var newSelection = this.selection.clone();
 			this.setSelection(newSelection.without(elementController))
 
@@ -1929,7 +1870,6 @@ ORYX.Editor = {
 		// Rule #2: When clicked on something that is neither
 		// selectable nor movable, clear the selection, and return.
 		} else if (!currentIsSelectable && !currentIsMovable) {
-			
 			this.setSelection([]);
 			
 			ORYX.Log.trace("Rule #2 applied for mouse down on %0", element.id);
@@ -1941,7 +1881,6 @@ ORYX.Editor = {
 		// the movedObject to the current one and enable Drag. Dockers will
 		// be processed in the dragDocker plugin.
 		} else if(!currentIsSelectable && currentIsMovable && !(elementController instanceof ORYX.Core.Controls.Docker)) {
-			
 			// TODO: If there is any moveable elements, do this in a plugin
 			//ORYX.Core.UIEnableDrag(event, elementController);
 
@@ -1951,7 +1890,6 @@ ORYX.Editor = {
 		// modifier key is pressed
 		} else if(currentIsSelectable && currentIsSelected &&
 			!modifierKeyPressed) {
-			
 			this._subSelection = this._subSelection != elementController ? elementController : undefined;
 						
 			this.setSelection(this.selection, this._subSelection);
@@ -2215,6 +2153,15 @@ ORYX.Editor.setMissingClasses = function() {
 	}
 	
 }
+
+ORYX.Editor.checkIfSaved = function() {
+    if(ORYX.READONLY == true) {
+        return true;
+    } else {
+        return ORYX.PROCESS_SAVED;
+    }
+};
+
 ORYX.Editor.checkClassType = function( classInst, classType ) {
 	
 	if( ORYX.Editor.SVGClassElementsAreAvailable ){
