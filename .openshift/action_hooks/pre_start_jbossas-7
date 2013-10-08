@@ -12,3 +12,8 @@
 # prevent your application from stopping cleanly or starting at all.
 # Application start and stop is subject to different timeouts
 # throughout the system.
+
+
+# reinitialize git repo for designer after every restart,
+# just comment this out to keep your changes.
+rm -rf $OPENSHIFT_JBOSSAS_DIR/niogit-repo
