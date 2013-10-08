@@ -15,6 +15,19 @@ Create a JBoss EAP application
 
     rhc app create -t jbossas-7 --from-code git://github.com/eschabell/openshift-bpm-process-designer.git designer
 
+Or you can create it in phased steps with the following commands
+
+    rhc app create -t jbossas-7 designer
+
+    cd designer
+
+    git remote add upstream -m master git://github.com/eschabell/openshift-bpm-process-designer.git
+
+    git pull -s recursive -X theirs upstream master
+
+    git push
+
+
 That's it, you can now checkout your application at:
 
     http://designer-$your_domain.rhcloud.com     
