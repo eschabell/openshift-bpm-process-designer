@@ -43,7 +43,9 @@ Just follow the link provided to the designer login:
        password: erics
 
 Note: each restart of the server will re-initialize the git repository that the designer is using, to keep your git repository
-backend for your designer just comment out the line in project at .openshift/action_hooks/pre_start_jbossas-7.
+backend for your designer see the comments in file:
+
+    .openshift/action_hooks/pre_start_jbossas-7
 
 
 Releases
