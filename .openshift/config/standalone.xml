@@ -34,8 +34,9 @@
         <extension module="org.jboss.as.weld"/>
     </extensions>
 <system-properties>
-	<property name="org.kie.nio.git.dir" value="niogit-repo"/>
-  <property name="org.kie.nio.git.deamon.enabled" value="false" />
+  <property name="org.uberfire.nio.git.dir" value="niogit-repo"/>
+  <property name="org.uberfire.nio.git.daemon.enabled" value="false" />
+  <property name="org.uberfire.nio.git.ssh.enabled" value="false" />
 </system-properties>
     <management>
         <management-interfaces>
