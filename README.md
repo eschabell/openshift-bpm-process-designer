@@ -51,6 +51,8 @@ backend for your designer see the comments in file:
 Releases
 ---------
 
+- v1.3 running on JBoss AS 7.1, standalone web process designer master product branch.
+
 - v1.2 running on JBoss AS 7.1, standalone web process designer v6.0.x product branch.
 
 - v1.1 running on JBoss AS 7.1, standalone web process designer v6.
