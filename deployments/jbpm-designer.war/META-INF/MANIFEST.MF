@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Build-Timestamp: Tue, 28 Jan 2014 15:06:39 +0100
+Implementation-Title: jBPM Designer Distribution Wars
+Implementation-Version: 6.0.2-SNAPSHOT
+Os-Version: 10.9.1
+Built-By: erics
+Specification-Vendor: JBoss by Red Hat
+Created-By: Apache Maven
+Os-Name: Mac OS X
+Implementation-URL: https://github.com/droolsjbpm/jbpm-designer/jbpm-d
+ esigner-distribution-wars
+Java-Vendor: Oracle Corporation
+Implementation-Vendor: JBoss by Red Hat
+Scm-Revision: 2883078a69c9c8282902b6c1bf4d779a1b9af964
+Implementation-Vendor-Id: org.jbpm
+Scm-Url: https://github.com/droolsjbpm/jbpm-designer/jbpm-designer-dis
+ tribution-wars
+Build-Jdk: 1.7.0_51
+Java-Version: 1.7.0_51
+Scm-Connection: scm:git:git@github.com:droolsjbpm/jbpm-designer.git/jb
+ pm-designer-distribution-wars
+Os-Arch: x86_64
+Specification-Title: jBPM Designer Distribution Wars
+Specification-Version: 6.0.2-SNAPSHOT
+Archiver-Version: Plexus Archiver
+
