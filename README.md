@@ -42,11 +42,13 @@ Just follow the link provided to the designer login:
 
        password: erics
 
-Note: each restart of the server will re-initialize the git repository that the designer is using, to keep your git repository
-backend for your designer see the comments in file:
+Note: each restart of the server will re-initialize the git repository that the designer is using, to keep your git repository backend for your designer see the comments in file:
 
     .openshift/action_hooks/pre_start_jbossas-7
 
+Note 2: this is a memory intensive app, it will run for a short time on a single gear, but eventually will fill up the limits of the memory. If you can, use a MEDIUM gear with creating this app and you will have no problems:
+
+    rhc app create -t jbossas-7 -g medium designer
 
 Releases
 ---------
