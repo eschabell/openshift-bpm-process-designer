@@ -6,27 +6,16 @@ This git repository helps you get up and running quickly with the jBPM
 Migration Tooling as integrated with the Web Designer.
 
 
-Running on OpenShift
+Install with one click
 ----------------------
+[![Click to install OpenShift](http://launch-shifter.rhcloud.com/launch/light/Click to install.svg)](https://openshift.redhat.com/app/console/application_type/custom?&cartridges[]=jbossas-7&initial_git_url=https://github.com/eschabell/openshift-bpm-process-designer.git&name=designer)
 
-Create an account at http://openshift.redhat.com/
 
-Create a JBoss EAP application
+Manutal install on OpenShift
+----------------------------
+Create a JBoss AS application
 
     rhc app create -t jbossas-7 --from-code git://github.com/eschabell/openshift-bpm-process-designer.git designer
-
-Or you can create it in phased steps with the following commands
-
-    rhc app create -t jbossas-7 designer
-
-    cd designer
-
-    git remote add upstream -m master git://github.com/eschabell/openshift-bpm-process-designer.git
-
-    git pull -s recursive -X theirs upstream master
-
-    git push
-
 
 That's it, you can now checkout your application at:
 
@@ -46,12 +35,10 @@ Note: each restart of the server will re-initialize the git repository that the 
 
     .openshift/action_hooks/pre_start_jbossas-7
 
-Note 2: this is a memory intensive app, it will run for a short time on a single gear, but eventually will fill up the limits of the memory. If you can, use a MEDIUM gear with creating this app and you will have no problems:
-
-    rhc app create -t jbossas-7 -g medium designer
-
 Releases
 ---------
+
+- v1.4 running on JBoss AS 7.1, standalone web process designer master product branch and one click install button.
 
 - v1.3 running on JBoss AS 7.1, standalone web process designer master product branch.
 
