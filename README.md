@@ -1,3 +1,6 @@
+Update: June 2018 moved to [Github](https://gitlab.com/eschabell/openshift-bpm-process-designer)
+
+
 JBoss BPM Process Designer on OpenShift 
 ===========================================
 Installing the JBoss BPM Web Process Designer standalone on OpenShift was never easier!
